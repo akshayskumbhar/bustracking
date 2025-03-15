@@ -33,20 +33,6 @@ public class AITRC_Vita extends AppCompatActivity implements OnMapReadyCallback 
 
     };
 
-    private static final int[] markerColors = {
-            Color.RED,
-            Color.BLUE,
-            Color.GREEN,
-            Color.YELLOW,
-            Color.CYAN,
-            Color.MAGENTA,
-            Color.BLACK,
-            Color.GRAY,
-            Color.LTGRAY,
-            Color.DKGRAY,
-            Color.WHITE
-    };
-
     private static final String[] markerTitles = {
             "AITRC Bus Stop",
             "Vita (Mayni Road)"
@@ -93,13 +79,11 @@ public class AITRC_Vita extends AppCompatActivity implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        // Add markers for each location in the array
-        for (LatLng location : locations) {
+// Add markers for each location with unique titles
+        for (int i = 0; i < locations.length; i++) {
             googleMap.addMarker(new MarkerOptions()
-                    .position(location)
-                    .title("AITRC Vita")); // Replace with custom titles if needed
-
+                    .position(locations[i])
+                    .title(markerTitles[i])); // Use unique titles from the array
         }
 
         // Move camera to the first location (adjust as needed)
@@ -107,10 +91,11 @@ public class AITRC_Vita extends AppCompatActivity implements OnMapReadyCallback 
         googleMap.setMinZoomPreference(13f); // Set minimum zoom level
         googleMap.setMaxZoomPreference(18f); // Set maximum zoom level
 
-        // Comment out the following code to remove the polyline
-        // googleMap.addPolyline(new PolylineOptions()
-        //         .addAll(Arrays.asList(locations)) // Add all locations from the array
-        //         .width(5f)
-        //         .color(Color.BLUE));
+        // Draw the route line on the map
+        PolylineOptions polylineOptions = new PolylineOptions()
+                .addAll(Arrays.asList(locations)) // Add all locations to the polyline
+                .color(Color.BLUE) // Set the color of the line
+                .width(10); // Set the width of the line
+        googleMap.addPolyline(polylineOptions);
     }
 }

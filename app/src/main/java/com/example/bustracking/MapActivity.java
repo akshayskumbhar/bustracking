@@ -2,6 +2,7 @@ package com.example.bustracking;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +26,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,9 +43,11 @@ import java.util.Locale;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
     private LatLng userLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Toast.makeText(this, "Error: Map Fragment not found!", Toast.LENGTH_SHORT).show();
         }
 
+        // Update the time every second
         TextView timeTextView;
         final Handler handler = new Handler();
         final int delay = 1000;
@@ -73,10 +82,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 handler.postDelayed(this, delay);
             }
         }, delay);
+
+        // Adjust padding to account for system bars
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED; // Consume the insets
+        });
     }
 
+
+
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
         // Set a default marker while fetching the location
@@ -91,6 +109,60 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Get the user's location
         fetchUserLocation();
+
+        // Add bus stops and draw routes
+        addBusStopsAndRoutes();
+
+    }
+    private void addBusStopsAndRoutes() {
+        LatLng[] locations = new LatLng[]{
+                new LatLng(17.222968, 74.531285), // AITRC Bus Stop
+                new LatLng(17.272594, 74.532558), // Nivri Naka
+                new LatLng(17.287470, 74.466882), // Aambegaon
+                new LatLng(17.297780, 74.435185), // Hanmantvadiye
+                new LatLng(17.298677, 74.421799), // Yevlevadi
+                new LatLng(17.273122, 74.403879), // Shivni
+                new LatLng(17.295098, 74.393226), // Aamrapur
+                new LatLng(17.266986, 74.378733), // Hingangaon
+                new LatLng(17.296575, 74.362551), // Kadepur
+                new LatLng(17.326731, 74.356614), // Soholi
+                new LatLng(17.296261, 74.333456), //Kadegaon
+        };
+
+        String[] markerTitles = {
+                "AITRC Bus Stop",
+                "Nivri Naka",
+                "Aambegaon",
+                "Hanmantvadiye",
+                "Yevlevadi",
+                "Shivni",
+                "Aamrapur",
+                "Hingangaon Kh",
+                "Kadepur",
+                "Soholi",
+                "Kadegaon"
+        };
+        // Add markers for all stops
+        for (int i = 0; i < locations.length; i++) {
+            mMap.addMarker(new MarkerOptions()
+                    .position(locations[i])
+                    .title(markerTitles[i])
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        }
+
+        // Draw routes using Polyline
+        drawRoute(locations);
+    }
+    private void drawRoute(LatLng[] locations) {
+        PolylineOptions polylineOptions = new PolylineOptions()
+                .color(Color.BLUE)
+                .width(10)
+                .geodesic(true);
+
+        for (LatLng location : locations) {
+            polylineOptions.add(location);
+        }
+        mMap.addPolyline(polylineOptions);
     }
 
     private void fetchLocationFromFirebase() {
@@ -136,7 +208,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
-                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.addMarker(new MarkerOptions()
                         .position(userLocation)
                         .title("Your Location"));
@@ -155,10 +227,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions()
                         .position(busLocation)
                         .title("Bus Location"))
-                .setIcon(getBusIcon());
+                        .setIcon(getBusIcon());
 
         // Add user's location to map if available
-        TextView distanceTextView = null;
         if (userLocation != null) {
             mMap.addMarker(new MarkerOptions()
                     .position(userLocation)
@@ -174,19 +245,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             // Distance is in meters; convert to kilometers and update TextView
 
             float distanceInKm = results[0] / 1000;
-            distanceTextView = findViewById(R.id.distancecal);
+            TextView distanceTextView = findViewById(R.id.distancecal);
             if (distanceTextView != null) {
                 distanceTextView.setText(String.format(Locale.getDefault(), "%.2f KM", distanceInKm));
             } else {
-                Log.e("MapActivity", "distanceTextView is null!");
-            }
-        } else {
-            Log.w("MapActivity", "User location is null. Showing 0 KM.");
-            // If userLocation is null, show 0 KM
-            if (distanceTextView != null) {
-                distanceTextView.setText("0 KM");
-            } else {
-                Log.e("MapActivity", "distanceTextView is null!");
+                Log.e("MapActivity", "Distance TextView is null!");
             }
         }
 
@@ -200,6 +263,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(busLocation, 15));
         }
+
+        addBusStopsAndRoutes(); // Keep the existing route intact
     }
 
     private BitmapDescriptor getBusIcon() {
@@ -210,4 +275,5 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, width, height, false);
         return BitmapDescriptorFactory.fromBitmap(scaledBitmap);
     }
+
 }

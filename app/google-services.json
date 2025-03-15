@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "399241136779",
+    "firebase_url": "https://bus-tracking-7c62a-default-rtdb.firebaseio.com",
+    "project_id": "bus-tracking-7c62a",
+    "storage_bucket": "bus-tracking-7c62a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399241136779:android:1de66332c8a1aa119fe28e",
+        "android_client_info": {
+          "package_name": "com.example.bustracking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9dvS1jHPy5AQGD4Q5EbhMW5Si_407-Ys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

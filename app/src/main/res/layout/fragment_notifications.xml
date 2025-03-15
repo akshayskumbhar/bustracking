@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,37 +8,57 @@
     tools:context=".ui.notifications.NotificationsFragment">
 
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_gchat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="545dp"
+        android:background="@drawable/linear_layout_background"
+        app:layout_constrainedHeight="true"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp" />
 
-        <EditText
-            android:id="@+id/userQuery"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#f5f5f5"
-            android:hint="Ask me something"
-            android:padding="10dp" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e0e0e0"
+        app:layout_constraintBottom_toTopOf="@+id/layout_gchat_chatbox"
+        tools:layout_editor_absoluteX="0dp" />
+
+
+
+    <RelativeLayout
+        android:id="@+id/layout_gchat_chatbox"
+        android:background="@drawable/linear_layout_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="66dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
 
         <Button
-            android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="Send" />
+            android:id="@+id/button_gchat_send"
+            android:layout_width="77dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackground"
+            android:text="Send"
+            android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/responseView"
-            android:layout_width="match_parent"
-            android:layout_height="559dp"
-            android:layout_marginTop="20dp"
-            android:background="#ffff"
-            android:padding="10dp"
-            android:text="AI Assistant's Response will appear here"
-            android:textSize="16sp" />
-    </LinearLayout>
+        <EditText
+            android:id="@+id/edit_gchat_message"
+            android:layout_width="287dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:layout_marginLeft="20dp"
+            android:background="@android:color/transparent"
+            android:hint="Enter Message"
+            android:inputType="text"
+            android:maxLines="6"
+            tools:ignore="Autofill" />
+
+    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

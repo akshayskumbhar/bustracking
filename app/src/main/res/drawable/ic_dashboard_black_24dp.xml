@@ -1,9 +1,36 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="24.0"
-    android:viewportHeight="24.0">
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+
+    <!-- Main Shape -->
     <path
-        android:fillColor="#FF000000"
-        android:pathData="M3,13h8L11,3L3,3v10zM3,21h8v-6L3,15v6zM13,21h8L21,11h-8v10zM13,3v6h8L21,3h-8z" />
+        android:fillColor="#2196F3"
+        android:pathData="M 360 680 L 600 680 L 600 640 L 560 620 Q 593 620 616.5 596.5 Q 640 573 640 540 L 640 360 Q 640 317 603 298.5 Q 566 280 480 280 Q 397 280 358.5 299 Q 320 318 320 360 L 320 540 Q 320 573 343.5 596.5 Q 367 620 400 620 L 360 640 L 360 680 Z" />
+
+    <!-- Left Eye -->
+    <path
+        android:fillColor="#BBDEFB"
+        android:pathData="M 410 580 Q 397 580 388.5 571.5 Q 380 563 380 550 Q 380 537 388.5 528.5 Q 397 520 410 520 Q 423 520 431.5 528.5 Q 440 537 440 550 Q 440 563 431.5 571.5 Q 423 580 410 580 Z" />
+
+    <!-- Right Eye -->
+    <path
+        android:fillColor="#BBDEFB"
+        android:pathData="M 550 580 Q 537 580 528.5 571.5 Q 520 563 520 550 Q 520 537 528.5 528.5 Q 537 520 550 520 Q 563 520 571.5 528.5 Q 580 537 580 550 Q 580 563 571.5 571.5 Q 563 580 550 580 Z" />
+
+    <!-- Mouth -->
+    <path
+        android:fillColor="#64B5F6"
+        android:pathData="M 380 480 L 380 360 L 580 360 L 580 480 L 380 480 Z" />
+
+    <!-- Outer Frame -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M 160 800 Q 127 800 103.5 776.5 Q 80 753 80 720 L 80 585 Q 80 574 87 566 Q 94 558 105 556 Q 129 548 144.5 527 Q 160 506 160 480 Q 160 454 144.5 433 Q 129 412 105 404 Q 94 402 87 394 Q 80 386 80 375 L 80 240 Q 80 207 103.5 183.5 Q 127 160 160 160 L 800 160 Q 833 160 856.5 183.5 Q 880 207 880 240 L 880 375 Q 880 386 873 394 Q 866 402 855 404 Q 831 412 815.5 433 Q 800 454 800 480 Q 800 506 815.5 527 Q 831 548 855 556 Q 866 558 873 566 Q 880 574 880 585 L 880 720 Q 880 753 856.5 776.5 Q 833 800 800 800 L 160 800 Z" />
+
+    <!-- Inner Border -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 160 720 L 800 720 L 800 618 Q 763 596 741.5 559.5 Q 720 523 720 480 Q 720 437 741.5 400.5 Q 763 364 800 342 L 800 240 L 160 240 L 160 342 Q 197 364 218.5 400.5 Q 240 437 240 480 Q 240 523 218.5 559.5 Q 197 596 160 618 L 160 720 Z" />
 </vector>
