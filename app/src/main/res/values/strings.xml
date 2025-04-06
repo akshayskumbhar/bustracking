@@ -3,7 +3,7 @@
     <string name="title_home">Bus Routes</string>
     <string name="title_dashboard">Tickets</string>
     <string name="title_notifications">Ai Chat</string>
-    <string name="title_settings">Settings</string>
+    <string name="title_pass">Monthly Pass</string>
     <string name="title_activity_login">Bus Tracking</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -35,4 +35,12 @@
         <item>UPI</item>
         <item>GPay</item>
     </string-array>
+
+    <string-array name="pass_durations">
+        <item>1 Month Pass</item>
+        <item>2 Months Pass</item>
+        <item>3 Months Pass</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

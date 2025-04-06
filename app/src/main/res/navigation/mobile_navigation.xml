@@ -24,8 +24,8 @@
         tools:layout="@layout/fragment_notifications" />
 
     <fragment
-        android:id="@+id/navigation_setting"
-        android:name="com.example.bustracking.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:id="@+id/navigation_pass"
+        android:name="com.example.bustracking.CameraFragment"
+        android:label="@string/title_pass"
+        tools:layout="@layout/activity_ticket_details" />
 </navigation>

@@ -40,6 +40,8 @@ android {
 dependencies {
 
     implementation(libs.appcompat)
+
+    implementation ("com.airbnb.android:lottie:6.1.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation ("com.google.android.gms:play-services-maps:19.0.0")
     implementation(platform("com.google.firebase:firebase-bom:33.6.0")) // Use latest version
@@ -47,6 +49,18 @@ dependencies {
     implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.22")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+
+    implementation ("com.google.ar.sceneform:core:1.17.1")
+    implementation ("com.google.ar.sceneform.ux:sceneform-ux:1.17.1")
+    implementation ("com.google.android.material:material:1.9.0")
+
+    implementation ("androidx.camera:camera-core:1.3.0")
+    implementation("androidx.camera:camera-lifecycle:1.3.0")
+    implementation("androidx.camera:camera-view:1.3.0")
+    implementation("androidx.camera:camera-extensions:1.3.0")
+
+
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.lifecycle.livedata.ktx)

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.example.bustracking.Vita_Kurli;
 import com.example.bustracking.Vita_Mayni;
 import com.example.bustracking.Vita_Tasgaon;
 import com.example.bustracking.Vita_Vadiyeraybag;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -64,6 +66,7 @@ public class HomeFragment extends Fragment implements RecycleViewAdapter.OnBusSt
         modelArrayList.add(new Model("Bambvade to Vita", "MH 10 DT 6705"));
         modelArrayList.add(new Model("Kharsundi to Vita", "MH 10 DT 6034"));
         modelArrayList.add(new Model("Vadiyeraybag to Vita", "MH 10 DT 3076"));
+        modelArrayList.add(new Model("Mumbai to Vita", "MH 10 DT 3000"));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecycleViewAdapter(modelArrayList, getContext(), this);

@@ -1,143 +1,155 @@
-<androidx.constraintlayout.widget.ConstraintLayout
+ <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
-    android:background="@drawable/linear_layout_background"
+    android:background="@drawable/normal_full"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <!-- Header Section -->
-    <TextView
-        android:id="@+id/tv_date_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="07 Jan, 2025 | 11:55 PM"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal" />
-
-    <!-- Route Selection Section -->
-    <AutoCompleteTextView
-        android:id="@+id/et_select_route"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Select or enter route"
-        android:drawableStart="@drawable/rounded_edit_text"
-        android:padding="12dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_edit_text" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Date & Time -->
+        <TextView
+            android:id="@+id/tv_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="07 Oct, 2024 | 01:55 PM"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Select Starting Route -->
+        <AutoCompleteTextView
+            android:id="@+id/et_select_route"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Select or enter route"
+            android:padding="12dp" />
+
+        <!-- Select Ending Route -->
+        <AutoCompleteTextView
+            android:id="@+id/et_ending_stop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="Enter ending stop"
+            android:padding="12dp"
+            android:visibility="gone" />
+
+        <!-- Route Selection Method -->
         <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
-
-        <RadioButton
-            android:id="@+id/rb_by_fare"
-            android:layout_width="0dp"
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Starting Stop"
-            android:buttonTint="#008000" />
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/rb_by_ending_stop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ending Stop"
-            android:buttonTint="#008000" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_by_fare"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#008000"
+                android:text="Starting Stop"
+                android:textColor="@color/white" />
 
-    <!-- Destination Section -->
-    <AutoCompleteTextView
-        android:id="@+id/et_ending_stop"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter ending stop"
-        android:visibility="gone"
-        android:layout_marginTop="16dp"
-        android:padding="12dp"
-        android:background="@drawable/rounded_edit_text" />
+            <RadioButton
+                android:id="@+id/rb_by_ending_stop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#008000"
+                android:text="Ending Stop"
+                android:textColor="@color/white" />
+        </RadioGroup>
 
-    <!-- Ticket Selection Section -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Tickets"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-
+        <!-- Ticket Selection -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Full"
-            android:layout_weight="1" />
+            android:layout_marginTop="16dp"
+            android:text="Select Tickets"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btn_decrease_full"
-            android:layout_width="40dp"
+
+
+        <!-- Pass Duration Selection -->
+        <Spinner
+            android:id="@+id/passDurationSpinner"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="-" />
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white" />
 
+        <!-- Ticket Generation Button -->
+        <Button
+            android:id="@+id/btnGenerateTicket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generate Ticket"
+            android:layout_marginTop="15dp"/>
+
+        <!-- Ticket Details -->
         <TextView
-            android:id="@+id/tv_full_count"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvTicketDetails"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:layout_marginHorizontal="16dp" />
+            android:background="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"/>
 
-        <Button
-            android:id="@+id/btn_increase_full"
-            android:layout_width="40dp"
+        <!-- Total Price -->
+        <TextView
+            android:id="@+id/tvTotalPrice"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="+" />
+            android:textSize="18sp"
+            android:textColor="@android:color/holo_red_dark"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_marginTop="10dp"/>
+
+        <!-- Next Button -->
+        <Button
+            android:id="@+id/btnPay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#008000"
+            android:enabled="true"
+            android:text="Next"
+            android:textColor="@android:color/white" />
+
     </LinearLayout>
+    </ScrollView>
 
-    <!-- Payment Options -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pay Using"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp" />
-
-    <Spinner
-        android:id="@+id/spinner_payment_options"
+    <!-- Lottie Animation -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/barAnimation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/payment_methods"
-        android:layout_marginTop="8dp" />
-
-    <!-- Pay Button -->
-    <Button
-        android:id="@+id/btn_pay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pay"
-        android:backgroundTint="#008000"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="16dp"
-        android:enabled="false" />
-</LinearLayout>
-
-
+        android:layout_height="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animation3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

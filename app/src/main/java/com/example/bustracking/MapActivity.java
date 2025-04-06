@@ -5,9 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.icu.text.SimpleDateFormat;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -47,6 +50,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
     private LatLng userLocation;
+    private SupportMapFragment mapFragment;
+
+    private Marker busMarker;
+    private LatLng previousLocation = null;
+    private long previousTime = 0;
 
 
     @Override
@@ -58,7 +66,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Initialize the map fragment
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -197,6 +205,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
+
     private void fetchUserLocation() {
         // Check if location permissions are granted
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -219,15 +228,78 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
+    private void animateMarker(final Marker marker, final LatLng toPosition) {
+        final Handler handler = new Handler();
+        final long start = System.currentTimeMillis();
+        final long duration = 1000; // 1 second animation
+
+        final LatLng startLatLng = marker.getPosition();
+        final Interpolator interpolator = new android.view.animation.LinearInterpolator();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = System.currentTimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed / duration);
+
+                double lat = (toPosition.latitude - startLatLng.latitude) * t + startLatLng.latitude;
+                double lng = (toPosition.longitude - startLatLng.longitude) * t + startLatLng.longitude;
+                marker.setPosition(new LatLng(lat, lng));
+
+                if (t < 1.0) {
+                    handler.postDelayed(this, 16); // roughly 60 fps
+                }
+            }
+        });
+    }
+
+
     private void updateMap(double busLatitude, double busLongitude) {
         LatLng busLocation = new LatLng(busLatitude, busLongitude);
 
+        // --- SPEED CALCULATION START ---
+        long currentTime = System.currentTimeMillis();
+
+        if (previousLocation != null && previousTime != 0) {
+            float[] result = new float[1];
+            Location.distanceBetween(
+                    previousLocation.latitude, previousLocation.longitude,
+                    busLatitude, busLongitude,
+                    result
+            );
+
+            float distanceInMeters = result[0];
+            long timeDiffInMillis = currentTime - previousTime;
+            float timeDiffInSeconds = timeDiffInMillis / 1000f;
+
+            if (timeDiffInSeconds > 0) {
+                float speedMps = distanceInMeters / timeDiffInSeconds; // meters/second
+                float speedKmph = speedMps * 3.6f;
+
+                TextView speedTextView = findViewById(R.id.speed);
+                if (speedTextView != null) {
+                    speedTextView.setText(String.format(Locale.getDefault(), "%.2f km/h", speedKmph));
+                }
+            }
+        }
+
+        // Save current as previous for next calculation
+        previousLocation = new LatLng(busLatitude, busLongitude);
+        previousTime = currentTime;
+        // --- SPEED CALCULATION END ---
+
         // Clear previous markers and add new ones
-        mMap.clear();
-        mMap.addMarker(new MarkerOptions()
-                        .position(busLocation)
-                        .title("Bus Location"))
-                        .setIcon(getBusIcon());
+        if (busMarker == null) {
+            // First time: add marker
+            busMarker = mMap.addMarker(new MarkerOptions()
+                    .position(busLocation)
+                    .title("Bus Location")
+                    .icon(getBusIcon()));
+        } else {
+            // Animate the marker from previous to current location
+            animateMarker(busMarker, busLocation);
+        }
+
 
         // Add user's location to map if available
         if (userLocation != null) {

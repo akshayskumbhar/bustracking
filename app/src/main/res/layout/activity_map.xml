@@ -18,6 +18,12 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:layout_editor_absoluteX="0dp" />
 
+    <com.google.ar.sceneform.SceneView
+        android:id="@+id/sceneView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -50,7 +56,7 @@
             android:layout_width="85dp"
             android:layout_height="60dp"
             android:gravity="center"
-            android:text="Location"
+            android:text="Going To"
             android:textColor="@color/black"
             android:textSize="15dp"
             android:textStyle="bold" />
@@ -80,6 +86,7 @@
             android:layout_width="85dp"
             android:layout_height="60dp"
             android:gravity="center"
+            android:text="0 KM"
             android:textColor="@color/black"
             android:textSize="15dp"
             android:textStyle="bold" />
@@ -109,6 +116,7 @@
             android:layout_width="85dp"
             android:layout_height="60dp"
             android:gravity="center"
+            android:text="00:00 PM"
             android:textColor="@color/black"
             android:textSize="15dp"
             android:textStyle="bold" />

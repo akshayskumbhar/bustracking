@@ -1,102 +1,136 @@
 package com.example.bustracking.ui.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bustracking.AiApiService;
-import com.example.bustracking.AiRequest;
-import com.example.bustracking.AiResponse;
-import com.example.bustracking.ApiClient;
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.bustracking.ChatAdapter;
+import com.example.bustracking.R;
 import com.example.bustracking.databinding.FragmentNotificationsBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Locale;
 
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
-    private List<String> messages;
-    private ChatAdapter chatAdapter; // Custom adapter for RecyclerView
+    private TextToSpeech textToSpeech;
+    private static final int SPEECH_REQUEST_CODE = 100;
+    private ImageButton micButton, sendButton;
+    private EditText messageInput;
+    private RecyclerView chatRecyclerView;
+    private ChatAdapter chatAdapter;
+    private List<String> messages = new ArrayList<>();
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        // Initialize message list and RecyclerView
-        messages = new ArrayList<>();
-        chatAdapter = new ChatAdapter(messages); // Custom adapter
-        binding.recyclerGchat.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerGchat.setAdapter(chatAdapter);
+        micButton = binding.micButton;
+        sendButton = binding.sendButton;
+        messageInput = binding.editGchatMessage;
+        chatRecyclerView = binding.recyclerGchat;
 
-        // Set up send button click listener
-        binding.buttonGchatSend.setOnClickListener(v -> {
-            String message = binding.editGchatMessage.getText().toString().trim();
-            if (!message.isEmpty()) {
-                sendMessage(message);
-                binding.editGchatMessage.setText(""); // Clear input field
+        chatRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        chatAdapter = new ChatAdapter(messages);
+        chatRecyclerView.setAdapter(chatAdapter);
+
+        LottieAnimationView voiceAnimation = binding.voiceAnimation;
+
+        micButton.setOnClickListener(v -> {
+            if (voiceAnimation.isAnimating()) {
+                voiceAnimation.pauseAnimation();  // Use pauseAnimation instead of cancelAnimation
             } else {
-                Toast.makeText(getContext(), "Enter a message", Toast.LENGTH_SHORT).show();
+                voiceAnimation.playAnimation();
             }
         });
 
-        return binding.getRoot();
+
+        // Initialize Text-to-Speech
+        textToSpeech = new TextToSpeech(getContext(), status -> {
+            if (status != TextToSpeech.ERROR) {
+                textToSpeech.setLanguage(Locale.US);
+            }
+        });
+
+        // Set up microphone button for voice input
+        micButton.setOnClickListener(v -> startVoiceInput());
+
+        // Set up send button to send message
+        sendButton.setOnClickListener(v -> {
+            String userMessage = messageInput.getText().toString().trim();
+            if (!userMessage.isEmpty()) {
+                sendMessage(userMessage);
+                messageInput.setText("");
+            }
+        });
+
+        return root;
     }
 
-    private void sendMessage(String message) {
-        // Add the user's message to the list
-        messages.add("You: " + message);
+    private void startVoiceInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+        try {
+            startActivityForResult(intent, SPEECH_REQUEST_CODE);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Voice Input Not Supported", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == getActivity().RESULT_OK && data != null) {
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (result != null && !result.isEmpty()) {
+                messageInput.setText(result.get(0)); // Set recognized text to input field
+                sendMessage(result.get(0)); // Send recognized message
+            }
+        }
+    }
+
+    private void sendMessage(String userMessage) {
+        messages.add("You: " + userMessage);
         chatAdapter.notifyItemInserted(messages.size() - 1);
+        chatRecyclerView.scrollToPosition(messages.size() - 1);
 
-        // Create the AI request
-        AiRequest.Message userMessage = new AiRequest.Message("user", message);
-        List<AiRequest.Message> messageList = new ArrayList<>();
-        messageList.add(userMessage);
+        // Simulating AI response (replace this with actual API call)
+        String aiResponse = "Hello! How can I assist you today?";
+        messages.add("Bus Chat AI: " + aiResponse);
+        chatAdapter.notifyItemInserted(messages.size() - 1);
+        chatRecyclerView.scrollToPosition(messages.size() - 1);
 
-        AiRequest aiRequest = new AiRequest("gpt-4o", true, messageList);
-
-        // Get the API service
-        AiApiService apiService = ApiClient.getRetrofitInstance().create(AiApiService.class);
-
-        // Make the API call asynchronously
-        apiService.getAiResponse(aiRequest).enqueue(new Callback<AiResponse>() {
-            @Override
-            public void onResponse(Call<AiResponse> call, Response<AiResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    String aiResponse = response.body().getChoices().get(0).getMessage().getContent();
-                    messages.add("Bus Chat AI: " + aiResponse);
-                    chatAdapter.notifyItemInserted(messages.size() - 1);
-                    binding.recyclerGchat.scrollToPosition(messages.size() - 1);
-                } else {
-                    Toast.makeText(getContext(), "Failed to get response", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AiResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Speak the AI response aloud
+        textToSpeech.speak(aiResponse, TextToSpeech.QUEUE_FLUSH, null, null);
     }
-
-
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
         binding = null;
     }
 }

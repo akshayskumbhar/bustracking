@@ -2,6 +2,13 @@ package com.example.bustracking.ui.login;
 
 import android.app.Activity;
 
+import android.graphics.drawable.Drawable;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.widget.ImageView;
+import android.text.InputType;
+import android.view.MotionEvent;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.bustracking.MainActivity;
 import com.example.bustracking.R;
 import com.example.bustracking.RegisterActivity;
@@ -37,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
     private FirebaseAuth mAuth;
+    private boolean isPasswordVisible = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView registration1;
         mAuth = FirebaseAuth.getInstance();
-
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -55,7 +63,25 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
-        final ProgressBar loadingProgressBar = binding.loading;
+        final LottieAnimationView loadingAnimation = binding.loadingAnimation;
+        final ImageView eyeIcon = findViewById(R.id.imageView2);
+
+        eyeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isPasswordVisible) {
+                    // Hide password
+                    passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    eyeIcon.setImageResource(R.drawable.ic_eye_closed); // Change to closed eye icon
+                } else {
+                    // Show password
+                    passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    eyeIcon.setImageResource(R.drawable.ic_eye_open); // Change to open eye icon
+                }
+                isPasswordVisible = !isPasswordVisible; // Toggle the flag
+                passwordEditText.setSelection(passwordEditText.getText().length()); // Move cursor to end
+            }
+        });
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -82,13 +108,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+
         loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
                 if (loginResult == null) {
                     return;
                 }
-                loadingProgressBar.setVisibility(View.GONE);
+                loadingAnimation.setVisibility(View.GONE);
                 if (loginResult.getError() != null) {
                     showLoginFailed(loginResult.getError());
                 }
@@ -135,20 +163,20 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
+                loadingAnimation.setVisibility(View.VISIBLE);
                 String email = usernameEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
 
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Email and password are required", Toast.LENGTH_SHORT).show();
-                    loadingProgressBar.setVisibility(View.GONE);
+                    loadingAnimation.setVisibility(View.GONE);
                     return;
                 }
 
                 // Firebase Authentication
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, task -> {
-                            loadingProgressBar.setVisibility(View.GONE);
+                            loadingAnimation.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
                                 // Login successful, navigate to MainActivity
                                 FirebaseUser user = mAuth.getCurrentUser();
@@ -161,6 +189,20 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Function to toggle password visibility
+    private void togglePasswordVisibility(EditText passwordEditText) {
+        if (passwordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_open, 0);
+        } else {
+            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_closed, 0);
+        }
+        passwordEditText.setSelection(passwordEditText.getText().length()); // Keep cursor at end
+    }
+
+
 
     private void updateUiWithUser(LoggedInUserView model) {
         // Check if the display name is null and set a default name if it is
