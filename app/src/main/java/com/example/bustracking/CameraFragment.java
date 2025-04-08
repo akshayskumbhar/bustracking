@@ -1,79 +1,68 @@
 package com.example.bustracking;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class CameraFragment extends Fragment {
 
-    private EditText fromLocation, toLocation;
-    private Button departNowButton;
-    private RecyclerView transportRecyclerView;
-    private TransportAdapter transportAdapter;
-    private List<TransportOption> transportOptions;
+    private Button generatePassBtn;
 
-    public class TransportOverviewFragment extends Fragment {
-
-        // Default constructor required for fragments
-        public TransportOverviewFragment() {
-            super(); // Explicit call to Fragment's constructor (optional)
-        }
-    }
-
-
-
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        // Initialize UI elements
-        fromLocation = view.findViewById(R.id.etFrom);
-        toLocation = view.findViewById(R.id.etTo);
-        departNowButton = view.findViewById(R.id.btnDepart);
-        transportRecyclerView = view.findViewById(R.id.recyclerView);
+        generatePassBtn = view.findViewById(R.id.btn_generate_pass); // Make sure this ID exists in your XML
 
-        // Initialize RecyclerView
-        transportRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        transportOptions = getDummyTransportOptions(); // Fetch transport options
-        transportAdapter = new TransportAdapter(transportOptions);
-        transportRecyclerView.setAdapter(transportAdapter);
-
-        departNowButton.setOnClickListener(v -> {
-            // Handle search logic (API call or filter results)
-            updateTransportOptions();
-        });
+        generatePassBtn.setOnClickListener(v -> checkIfPassExists());
 
         return view;
     }
 
-    // Dummy Data for RecyclerView (Replace with API call)
-    private List<TransportOption> getDummyTransportOptions() {
-        List<TransportOption> options = new ArrayList<>();
-        options.add(new TransportOption("8:11 am - 9:13 am", "1h 02Min", "Bus 85 + Metro Red", "AED 5.00"));
-        options.add(new TransportOption("8:13 am - 9:21 am", "1h 08Min", "Bus F42 + Metro Red", "AED 5.00"));
-        options.add(new TransportOption("8:16 am - 9:23 am", "1h 07Min", "Bus F42 + Metro Red", "AED 5.00"));
-        options.add(new TransportOption("8:19 am - 9:26 am", "1h 07Min", "Bus F43 + Metro Red", "AED 5.00"));
-        return options;
+    private void checkIfPassExists() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ticketsRef = FirebaseDatabase.getInstance().getReference("tickets");
+
+        ticketsRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Pass already exists
+                    showContactTeacherDialog();
+                } else {
+                    // No pass, go to pass creation screen
+                    startActivity(new Intent(getContext(), TicketDetailsActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Error checking pass status.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    // Function to update transport options (Placeholder)
-    private void updateTransportOptions() {
-        // You can fetch new data from API and update the RecyclerView
-        transportAdapter.notifyDataSetChanged();
+    private void showContactTeacherDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Pass Already Exists")
+                .setMessage("You have already generated a monthly pass. Please contact your Teacher or Department to generate a new one.")
+                .setPositiveButton("OK", null)
+                .show();
     }
 }

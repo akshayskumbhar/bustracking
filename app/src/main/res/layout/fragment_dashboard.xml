@@ -8,16 +8,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+     <ScrollView
+         android:id="@+id/scrollView"
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+         android:fillViewport="true"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintBottom_toTopOf="@+id/btnPay">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:padding="16dp">
 
         <!-- Date & Time -->
         <TextView
@@ -25,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="07 Oct, 2024 | 01:55 PM"
+            android:text="26 April, 2003 | 00:00 PM"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -77,6 +80,26 @@
                 android:text="Ending Stop"
                 android:textColor="@color/white" />
         </RadioGroup>
+        <EditText
+            android:id="@+id/et_student_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Full Name"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="12dp"
+            android:layout_marginTop="16dp"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_roll_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Roll Number"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
+            android:inputType="text" />
+
 
         <!-- Ticket Selection -->
         <TextView
@@ -129,27 +152,37 @@
             android:layout_marginTop="10dp"/>
 
         <!-- Next Button -->
-        <Button
-            android:id="@+id/btnPay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#008000"
-            android:enabled="true"
-            android:text="Next"
-            android:textColor="@android:color/white" />
 
-    </LinearLayout>
-    </ScrollView>
+         </LinearLayout>
+     </ScrollView>
 
-    <!-- Lottie Animation -->
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/barAnimation"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/animation3" />
+     <!-- Payment Button -->
+     <Button
+         android:id="@+id/btnPay"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Next"
+         android:textColor="@android:color/white"
+         android:backgroundTint="#008000"
+         app:layout_constraintBottom_toTopOf="@+id/nav_view" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+     <!-- Lottie Animation -->
+     <com.airbnb.lottie.LottieAnimationView
+         android:id="@+id/barAnimation"
+         android:layout_width="match_parent"
+         android:layout_height="130dp"
+         app:layout_constraintBottom_toTopOf="@+id/nav_view"
+         app:lottie_autoPlay="true"
+         app:lottie_loop="true"
+         app:lottie_rawRes="@raw/animation3" />
+
+     <!-- Bottom Navigation -->
+     <com.google.android.material.bottomnavigation.BottomNavigationView
+         android:id="@+id/nav_view"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:background="?android:attr/windowBackground"
+         app:menu="@menu/bottom_nav_menu"
+         app:layout_constraintBottom_toBottomOf="parent" />
+
+ </androidx.constraintlayout.widget.ConstraintLayout>

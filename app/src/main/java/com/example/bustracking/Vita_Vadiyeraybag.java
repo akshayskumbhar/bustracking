@@ -109,8 +109,8 @@ public class Vita_Vadiyeraybag extends AppCompatActivity implements OnMapReadyCa
 // Add markers for each location with unique titles
         for (int i = 0; i < locations.length; i++) {
             googleMap.addMarker(new MarkerOptions()
-                    .position(locations[i])
-                    .title(markerTitles[i])); // Use unique titles from the array
+            .position(locations[i])
+            .title(markerTitles[i])); // Use unique titles from the array
         }
         // Move camera to the first location (adjust as needed)
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(locations[0]));

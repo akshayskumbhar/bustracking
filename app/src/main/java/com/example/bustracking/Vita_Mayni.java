@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
-public class Vita_Mayni extends AppCompatActivity implements OnMapReadyCallback{
+public class  Vita_Mayni extends AppCompatActivity implements OnMapReadyCallback{
 
     // Define an array of LatLng objects to hold multiple locations
     private LatLng[] locations = new LatLng[]{
@@ -38,7 +38,7 @@ public class Vita_Mayni extends AppCompatActivity implements OnMapReadyCallback{
             new LatLng(17.313019, 74.587885),
             // Jondhalkhindi Fata
             new LatLng(17.321442, 74.611664),
-            // Pentrol Pump
+            // Petrol Pump
             new LatLng(17.327477, 74.629113),
             // Lengre School
             new LatLng(17.330328, 74.635763),
@@ -80,7 +80,7 @@ public class Vita_Mayni extends AppCompatActivity implements OnMapReadyCallback{
             "Bhambarde",
             "Devnagar Fata",
             "Jondhalkhindi Fata",
-            "Pentrol Pump",
+            "Petrol Pump",
             "Lengre School",
             "Lengre",
             "Madhalmuthi",

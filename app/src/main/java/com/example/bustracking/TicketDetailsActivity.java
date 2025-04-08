@@ -33,6 +33,8 @@ public class TicketDetailsActivity extends AppCompatActivity {
         TextView tvValidity = findViewById(R.id.tvValidity);
 
         // Get data from Intent
+        String studentName = getIntent().getStringExtra("studentName");
+        String rollNo = getIntent().getStringExtra("rollNo");
         String start = getIntent().getStringExtra("start");
         String end = getIntent().getStringExtra("end");
         String duration = getIntent().getStringExtra("duration");
@@ -44,7 +46,9 @@ public class TicketDetailsActivity extends AppCompatActivity {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         // Build ticket details
-        String info = "Route: " + start + " To " + end + "\n" +
+        String info = "Student Name: " + studentName + "\n" +
+                "Roll No: " + rollNo + "\n" +
+                "Route: " + start + " To " + end + "\n" +
                 "Duration: " + duration + "\n" +
                 "Price: ₹" + price + "\n" +
                 "Expiry Date: " + expiryDate;

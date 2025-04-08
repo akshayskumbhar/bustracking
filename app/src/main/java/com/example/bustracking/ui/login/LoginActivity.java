@@ -54,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView registration1;
         mAuth = FirebaseAuth.getInstance();
+
+
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
