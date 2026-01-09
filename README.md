@@ -13,4 +13,4 @@ Wireframes/Mock diagrams of the proposed solution (optional)
 
 New Updated Version 
 
-<img width="571" height="1280" alt="image" src="https://github.com/user-attachments/assets/ac4f789c-cbaf-4ac0-8ca2-633e1d59f246" />
+<img style="font-size: 20px" width="571" height="1280" alt="image" src="https://github.com/user-attachments/assets/ac4f789c-cbaf-4ac0-8ca2-633e1d59f246" />
