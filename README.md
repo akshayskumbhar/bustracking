@@ -13,4 +13,4 @@ Wireframes/Mock diagrams of the proposed solution (optional)
 
 New Updated Version 
 
-![image](updated images/splash1.jpeg)
+![image](https://github.com/akshayskumbhar/bustracking/blob/master/updated%20images/splash1.jpeg?raw=true)
