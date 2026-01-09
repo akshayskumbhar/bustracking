@@ -1,7 +1,7 @@
 {
   "project_info": {
     "project_number": "399241136779",
-    "firebase_url": "https://bus-tracking-7c62a-default-rtdb.firebaseio.com",
+    "firebase_url": "https://bus-tracking-xxxx-default-rtdb.firebaseio.com",  
     "project_id": "bus-tracking-7c62a",
     "storage_bucket": "bus-tracking-7c62a.firebasestorage.app"
   },
@@ -16,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD9dvS1jHPy5AQGD4Q5EbhMW5Si_407-Ys"
+          "current_key": "AIxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ],
       "services": {
