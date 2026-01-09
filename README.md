@@ -1,4 +1,6 @@
-###Bus Tracking App Using Android studio Project 
+### IOT Based Automated Geo Location And Route Optimization System for Campus Transit 
+
+##  Bus Tracking App Using Android studio Project
 
 
 Process flow diagram or Use-case diagram
