@@ -13,4 +13,4 @@ Wireframes/Mock diagrams of the proposed solution (optional)
 
 New Updated Version 
 
-![image](updated-images/splash.jpeg)
+![image](updated images/splash1.jpeg)
