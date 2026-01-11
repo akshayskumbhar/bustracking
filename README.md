@@ -26,7 +26,7 @@
   <img src="https://github.com/user-attachments/assets/992c28e6-916d-41e6-bf28-6ee6c5063286" width="200" alt="App Screen 1"/>
   <img src="https://github.com/user-attachments/assets/be0603a6-5a5d-4fb0-9c26-b03ac87a6fba" width="200" alt="App Screen 2"/>
   <img src="https://github.com/user-attachments/assets/64ba19b2-ecbc-4a6c-b949-782d31edbe00" width="200" alt="App Screen 3"/>
-  ![bus_tracking_browser](https://github.com/user-attachments/assets/9ebca760-9777-41df-8567-600cd6d1f354)
+  <img src="https://github.com/user-attachments/assets/9ebca760-9777-41df-8567-600cd6d1f354" width="200" alt="App Screen 4"/>
 
 </p>
 
