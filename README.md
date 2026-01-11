@@ -12,5 +12,5 @@ Wireframes/Mock diagrams of the proposed solution (optional)
 ![image](https://github.com/user-attachments/assets/d73db578-1316-48a3-8e8a-27fb680506f9)
 
 New Updated Version 
+![splash1](https://github.com/user-attachments/assets/992c28e6-916d-41e6-bf28-6ee6c5063286)
 
-<img style="font-size: 20px" width="571" height="1280" alt="image" src="https://github.com/user-attachments/assets/ac4f789c-cbaf-4ac0-8ca2-633e1d59f246" />
