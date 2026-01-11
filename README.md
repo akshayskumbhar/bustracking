@@ -23,9 +23,9 @@
 ## 🔄 New Updated Version (App Screenshots)
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/992c28e6-916d-41e6-bf28-6ee6c5063286" width="280" alt="App Screen 1"/>
-  <img src="https://github.com/user-attachments/assets/be0603a6-5a5d-4fb0-9c26-b03ac87a6fba" width="280" alt="App Screen 2"/>
-  <img src="https://github.com/user-attachments/assets/64ba19b2-ecbc-4a6c-b949-782d31edbe00" width="280" alt="App Screen 3"/>
+  <img src="https://github.com/user-attachments/assets/992c28e6-916d-41e6-bf28-6ee6c5063286" width="600" alt="App Screen 1"/>
+  <img src="https://github.com/user-attachments/assets/be0603a6-5a5d-4fb0-9c26-b03ac87a6fba" width="600" alt="App Screen 2"/>
+  <img src="https://github.com/user-attachments/assets/64ba19b2-ecbc-4a6c-b949-782d31edbe00" width="600" alt="App Screen 3"/>
 </p>
 
 ---
