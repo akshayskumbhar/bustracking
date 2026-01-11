@@ -1,4 +1,4 @@
-![bus_routes](https://github.com/user-attachments/assets/b2c2d868-eab7-4825-83bc-776a28bdfebe)## 🚍 IOT Based Automated Geo Location And Route Optimization System for Campus Transit
+## 🚍 IOT Based Automated Geo Location And Route Optimization System for Campus Transit
 
 ### 📱 Bus Tracking App Using Android Studio
 
